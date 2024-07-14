@@ -1,4 +1,4 @@
-namespace MAINAPPLICATION
+namespace AuthenticationService
 {
     public class WeatherForecast
     {

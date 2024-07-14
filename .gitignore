@@ -5,3 +5,4 @@
 *.vsidx
 .vs/Radio.cabs/v17/.suo
 .vs/Radio.cabs/v17/DocumentLayout.json
+AuthenticationService/appsettings.json

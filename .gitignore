@@ -9,3 +9,6 @@ AuthenticationService/appsettings.json
 AuthenticationService/_takeNote.txt
 *.txt
 *.json
+*.txt
+*/appsettings.json
+/AuthenticationService

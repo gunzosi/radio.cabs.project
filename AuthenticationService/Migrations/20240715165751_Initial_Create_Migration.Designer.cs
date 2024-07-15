@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationService.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20240715043304_Initial_AuthenticationService_150724")]
-    partial class Initial_AuthenticationService_150724
+    [Migration("20240715165751_Initial_Create_Migration")]
+    partial class Initial_Create_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace AuthenticationService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CompanyTelephone")
+                    b.Property<long?>("CompanyTelephone")
                         .HasColumnType("bigint");
 
                     b.Property<string>("ContactPerson")
@@ -59,10 +59,10 @@ namespace AuthenticationService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("FaxNumber")
+                    b.Property<long?>("FaxNumber")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("MembershipTypeId")
+                    b.Property<int?>("MembershipTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -132,7 +132,7 @@ namespace AuthenticationService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("District")
@@ -140,7 +140,6 @@ namespace AuthenticationService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DriverCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DriverEmail")
@@ -150,8 +149,9 @@ namespace AuthenticationService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("DriverMobile")
-                        .HasColumnType("bigint");
+                    b.Property<string>("DriverMobile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DriverName")
                         .IsRequired()
@@ -166,6 +166,10 @@ namespace AuthenticationService.Migrations
 
                     b.Property<DateTime?>("RefreshTokenExpiryTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ward")
                         .IsRequired()
@@ -307,9 +311,7 @@ namespace AuthenticationService.Migrations
                 {
                     b.HasOne("AuthenticationService.Models.MembershipType", "MembershipType")
                         .WithMany("Companies")
-                        .HasForeignKey("MembershipTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MembershipTypeId");
 
                     b.Navigation("MembershipType");
                 });
@@ -329,9 +331,7 @@ namespace AuthenticationService.Migrations
                 {
                     b.HasOne("AuthenticationService.Models.Company", "Company")
                         .WithMany("Drivers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
                 });

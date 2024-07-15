@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuthenticationService.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_AuthenticationService_150724 : Migration
+    public partial class Initial_Create_Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,13 +53,13 @@ namespace AuthenticationService.Migrations
                     ContactPerson = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactPersonNumber = table.Column<long>(type: "bigint", nullable: false),
-                    CompanyTelephone = table.Column<long>(type: "bigint", nullable: false),
-                    FaxNumber = table.Column<long>(type: "bigint", nullable: false),
+                    CompanyTelephone = table.Column<long>(type: "bigint", nullable: true),
+                    FaxNumber = table.Column<long>(type: "bigint", nullable: true),
                     CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MembershipTypeId = table.Column<int>(type: "int", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MembershipTypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,8 +68,7 @@ namespace AuthenticationService.Migrations
                         name: "FK_Companies_MembershipTypes_MembershipTypeId",
                         column: x => x.MembershipTypeId,
                         principalTable: "MembershipTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -123,18 +122,19 @@ namespace AuthenticationService.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DriverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DriverCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DriverMobile = table.Column<long>(type: "bigint", nullable: false),
+                    DriverCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DriverMobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriverEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriverLicense = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ward = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -143,8 +143,7 @@ namespace AuthenticationService.Migrations
                         name: "FK_Drivers_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

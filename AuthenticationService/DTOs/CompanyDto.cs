@@ -11,5 +11,4 @@ public class CompanyDto
     public long FaxNumber { get; set; }
     public string CompanyEmail { get; set; }
     public string Password { get; set; }
-    public int MembershipTypeId { get; set; }
 }

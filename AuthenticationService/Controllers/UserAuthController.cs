@@ -81,6 +81,12 @@ namespace AuthenticationService.Controllers
                 existingUser.RefreshToken = Guid.NewGuid().ToString();
                 existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(60);
                 await _dbContext.SaveChangesAsync();
+                // Response.Cookies.Append("refreshToken", existingUser.RefreshToken, new CookieOptions
+                // {
+                //     HttpOnly = true,
+                //     Secure = false,
+                //     Expires = existingCompany.RefreshTokenExpiryTime
+                // });
                 return Ok(new
                 {
                     StatusCode = 200,
@@ -117,7 +123,7 @@ namespace AuthenticationService.Controllers
             return Ok(new
             {
                 StatusCode = 200,
-                Token = tokenRefresh,
+                Token = tokenString,
                 RefreshToken = user.RefreshToken
             });
         }

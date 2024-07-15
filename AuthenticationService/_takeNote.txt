@@ -1,5 +1,1 @@
-﻿-- Configuration: 
-   -- Database : 
-    - 
-   -- Container Blob : 
-    - 
+﻿

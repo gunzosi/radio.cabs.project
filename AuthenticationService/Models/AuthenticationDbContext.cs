@@ -9,7 +9,6 @@ public class AuthenticationDbContext : DbContext
     }
     
     public DbSet<Driver> Drivers { get; set; }
-    public DbSet<DriverImage> DriverImages { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<CompanyAddress> CompanyAddresses { get; set; }
     public DbSet<ServiceCity> ServiceCities { get; set; }
@@ -51,11 +50,6 @@ public class AuthenticationDbContext : DbContext
             .WithMany(c => c.ServiceCities)
             .HasForeignKey(sc => sc.CompanyId);
         
-        // 6. DriverImage - Driver 
-        modelBuilder.Entity<DriverImage>()
-            .HasOne(di => di.Driver)
-            .WithMany(d => d.DriverImages)
-            .HasForeignKey(di => di.DriverId);
         
         
     }

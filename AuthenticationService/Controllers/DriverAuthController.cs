@@ -64,7 +64,8 @@ namespace AuthenticationService.Controllers
                 // }
 
                 var existingDriver =
-                    await _dbContext.Drivers.FirstOrDefaultAsync(d => d.DriverMobile == driverDto.DriverMobile || d.DriverEmail == driverDto.DriverEmail);
+                    await _dbContext.Drivers
+                        .FirstOrDefaultAsync(d => d.DriverMobile == driverDto.DriverMobile || d.DriverEmail == driverDto.DriverEmail);
                 if (existingDriver != null)
                 {
                     return Conflict(new

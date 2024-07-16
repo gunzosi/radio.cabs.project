@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuthenticationService.Models
@@ -21,13 +19,12 @@ namespace AuthenticationService.Models
         public string Ward { get; set; }
         public string District { get; set; }
         public string City { get; set; }
+        public string? DriverPersonalImage { get; set; }
+        public string? DriverLicenseImage { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
         public int? CompanyId { get; set; } // Allow CompanyId to be nullable
         public Company? Company { get; set; }
-        public ICollection<DriverImage> DriverImages { get; set; }
-        
-        
     }
 }

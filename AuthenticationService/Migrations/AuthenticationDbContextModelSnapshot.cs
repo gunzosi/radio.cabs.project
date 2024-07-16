@@ -146,12 +146,18 @@ namespace AuthenticationService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DriverLicenseImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DriverMobile")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DriverName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DriverPersonalImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -177,32 +183,6 @@ namespace AuthenticationService.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Drivers");
-                });
-
-            modelBuilder.Entity("AuthenticationService.Models.DriverImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DriverLicenseImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DriverPersonalImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
-
-                    b.ToTable("DriverImages");
                 });
 
             modelBuilder.Entity("AuthenticationService.Models.MembershipFee", b =>
@@ -333,17 +313,6 @@ namespace AuthenticationService.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("AuthenticationService.Models.DriverImage", b =>
-                {
-                    b.HasOne("AuthenticationService.Models.Driver", "Driver")
-                        .WithMany("DriverImages")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Driver");
-                });
-
             modelBuilder.Entity("AuthenticationService.Models.MembershipFee", b =>
                 {
                     b.HasOne("AuthenticationService.Models.MembershipType", "MembershipType")
@@ -373,11 +342,6 @@ namespace AuthenticationService.Migrations
                     b.Navigation("Drivers");
 
                     b.Navigation("ServiceCities");
-                });
-
-            modelBuilder.Entity("AuthenticationService.Models.Driver", b =>
-                {
-                    b.Navigation("DriverImages");
                 });
 
             modelBuilder.Entity("AuthenticationService.Models.MembershipType", b =>

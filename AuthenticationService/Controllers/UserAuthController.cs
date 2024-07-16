@@ -60,6 +60,47 @@ namespace AuthenticationService.Controllers
                 });
             } 
         }
+        
+        [HttpPost("admin/register")]
+        public async Task<IActionResult> RegisterAdmin(UserDto userDto)
+        {
+            try
+            {
+                var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = 400,
+                        Message = "User already exists"
+                    });
+                }
+                var user = new User
+                {
+                    FullName = userDto.FullName,
+                    Email = userDto.Email,
+                    Password = PasswordHelper.HashPassword(userDto.Password)
+                };
+            
+                await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+
+                var token = JwtHelper.GenerateToken(user.Email, _configuration["Jwt:Key"], "Admin");
+                return Ok(new
+                {
+                    Status = 200,
+                    Message = "User registered successfully",
+                    Token = token
+                });    
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = e.Message
+                });
+            } 
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)

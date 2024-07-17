@@ -30,7 +30,7 @@ var app = builder.Build();
 // Cors 
 app.UseCors(options =>
 {
-    options.WithOrigins("http://localhost:3000")
+    options.WithOrigins()
         .AllowAnyHeader()
         .AllowAnyMethod();
 });

@@ -1,56 +1,62 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using RegistrationService.Services.IServices;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
-namespace RegistrationService.Services;
-
-public class BlobServices : IBlobServices
+namespace RegistrationService.Services
 {
-    private readonly BlobServiceClient _blobServicesClient;
-    private readonly string _containerName;
-
-    public BlobServices(BlobServiceClient blobServiceClient, IConfiguration configuration)
+    public class BlobServices : IBlobServices
     {
-        _blobServicesClient = blobServiceClient;
-        _containerName = configuration.GetSection("BlobStorage:ContainerName").Value!;
-    }
+        private readonly BlobServiceClient _blobServiceClient;
+        private readonly string _containerName;
 
-    public async Task<string> UploadBlobAsync(IFormFile file)
-    {
-        var containerClient = _blobServicesClient.GetBlobContainerClient(_containerName);
-        var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + "_" + file.FileName);
-        
-        using (var stream = file.OpenReadStream())
+        public BlobServices(BlobServiceClient blobServiceClient, IConfiguration configuration)
         {
-            await blobClient.UploadAsync(stream, true);
+            _blobServiceClient = blobServiceClient;
+            _containerName = configuration.GetSection("AzureBlobStorage:ContainerName").Value;
         }
 
-        return blobClient.Uri.ToString();
-    }
-
-    public async Task DeleteBlobAsync(string blobUrl)
-    {
-        var containerClient = _blobServicesClient.GetBlobContainerClient(_containerName);
-        var blobName = Path.GetFileName(new Uri(blobUrl).LocalPath);
-        var blobClient = containerClient.GetBlobClient(blobName);
-
-        await blobClient.DeleteIfExistsAsync();
-    }
-
-    public async Task<string> UploadBlobWithContentTypeAsync(IFormFile file, string contentType)
-    {
-        var containerClient = _blobServicesClient.GetBlobContainerClient(_containerName);
-        var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + "_" + file.FileName);
-        var blobHttpHeader = new BlobHttpHeaders { ContentType = contentType };
-        
-        using (var stream = file.OpenReadStream())
+        public async Task<string> UploadBlobAsync(IFormFile file)
         {
-            await blobClient.UploadAsync(stream, new BlobUploadOptions
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+            var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + "_" + file.FileName);
+            
+            using (var stream = file.OpenReadStream())
             {
-                HttpHeaders = blobHttpHeader
-            });
+                await blobClient.UploadAsync(stream, true);
+            }
+
+            return blobClient.Uri.ToString();
         }
 
-        return blobClient.Uri.ToString();
+        public async Task DeleteBlobAsync(string blobUrl)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+            var blobName = Path.GetFileName(new Uri(blobUrl).LocalPath);
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            await blobClient.DeleteIfExistsAsync();
+        }
+
+        public async Task<string> UploadBlobWithContentTypeAsync(IFormFile file, string contentType)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+            var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + "_" + file.FileName);
+            var blobHttpHeader = new BlobHttpHeaders { ContentType = contentType };
+            
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, new BlobUploadOptions
+                {
+                    HttpHeaders = blobHttpHeader
+                });
+            }
+
+            return blobClient.Uri.ToString();
+        }
     }
 }

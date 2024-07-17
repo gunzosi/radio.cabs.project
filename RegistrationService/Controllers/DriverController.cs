@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RegistrationService.DTOs;
+using RegistrationService.Helpers;
 using RegistrationService.Models;
+using RegistrationService.Services;
 using RegistrationService.Services.IServices;
 
 namespace RegistrationService.Controllers
@@ -37,6 +39,7 @@ namespace RegistrationService.Controllers
             });
         }
 
+
         [HttpPut("updateProfile/{id}")]
         public async Task<IActionResult> UpdateProfile(int id, [FromForm] DriverUpdateDto driverDto)
         {
@@ -46,22 +49,57 @@ namespace RegistrationService.Controllers
                 return NotFound("Driver not found");
             }
 
-            driver.DriverName = driverDto.DriverName;
-            driver.DriverMobile = driverDto.DriverMobile;
-            driver.DriverEmail = driverDto.DriverEmail;
-            driver.DriverLicense = driverDto.DriverLicense;
-            driver.Address = driverDto.Address;
-            driver.Street = driverDto.Street;
-            driver.Ward = driverDto.Ward;
-            driver.District = driverDto.District;
-            driver.City = driverDto.City;
-            
+            if (!string.IsNullOrEmpty(driverDto.DriverName))
+            {
+                driver.DriverName = driverDto.DriverName;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.DriverMobile))
+            {
+                driver.DriverMobile = driverDto.DriverMobile;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.DriverEmail))
+            {
+                driver.DriverEmail = driverDto.DriverEmail;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.DriverLicense))
+            {
+                driver.DriverLicense = driverDto.DriverLicense;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.Address))
+            {
+                driver.Address = driverDto.Address;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.Street))
+            {
+                driver.Street = driverDto.Street;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.Ward))
+            {
+                driver.Ward = driverDto.Ward;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.District))
+            {
+                driver.District = driverDto.District;
+            }
+
+            if (!string.IsNullOrEmpty(driverDto.City))
+            {
+                driver.City = driverDto.City;
+            }
+
             if (driverDto.DriverPersonalImage != null)
             {
                 var personalImage = await _blobServices.UploadBlobAsync(driverDto.DriverPersonalImage);
                 driver.DriverPersonalImage = personalImage;
             }
-            
+
             if (driverDto.DriverLicenseImage != null)
             {
                 var licenseImage = await _blobServices.UploadBlobAsync(driverDto.DriverLicenseImage);
@@ -85,7 +123,7 @@ namespace RegistrationService.Controllers
                     throw;
                 }
             }
-            
+
             return Ok(new
             {
                 statusCode = 200,
@@ -93,6 +131,7 @@ namespace RegistrationService.Controllers
                 message = "Driver updated successfully"
             });
         }
+
         
         
         // 2. Driver can apply to company

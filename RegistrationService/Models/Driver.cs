@@ -10,7 +10,7 @@ namespace RegistrationService.Models
         public int Id { get; set; }
         public string DriverName { get; set; }
         public string? DriverCode { get; set; }
-        public long DriverMobile { get; set; }
+        public string DriverMobile { get; set; }
         public string? DriverEmail { get; set; }
         public string Password { get; set; }
         public string DriverLicense { get; set; }

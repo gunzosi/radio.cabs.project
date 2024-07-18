@@ -185,6 +185,36 @@ namespace AuthenticationService.Migrations
                     b.ToTable("Drivers");
                 });
 
+            modelBuilder.Entity("AuthenticationService.Models.DriverApplications", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ApplicationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("DriverApplications");
+                });
+
             modelBuilder.Entity("AuthenticationService.Models.MembershipFee", b =>
                 {
                     b.Property<int>("Id")
@@ -313,6 +343,25 @@ namespace AuthenticationService.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("AuthenticationService.Models.DriverApplications", b =>
+                {
+                    b.HasOne("AuthenticationService.Models.Company", "Company")
+                        .WithMany("DriverApplications")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationService.Models.Driver", "Driver")
+                        .WithMany("DriverApplications")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Driver");
+                });
+
             modelBuilder.Entity("AuthenticationService.Models.MembershipFee", b =>
                 {
                     b.HasOne("AuthenticationService.Models.MembershipType", "MembershipType")
@@ -339,9 +388,16 @@ namespace AuthenticationService.Migrations
                 {
                     b.Navigation("CompanyAddresses");
 
+                    b.Navigation("DriverApplications");
+
                     b.Navigation("Drivers");
 
                     b.Navigation("ServiceCities");
+                });
+
+            modelBuilder.Entity("AuthenticationService.Models.Driver", b =>
+                {
+                    b.Navigation("DriverApplications");
                 });
 
             modelBuilder.Entity("AuthenticationService.Models.MembershipType", b =>

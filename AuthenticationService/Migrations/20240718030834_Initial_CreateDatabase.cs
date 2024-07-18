@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuthenticationService.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_AuthenticationService_170720204 : Migration
+    public partial class Initial_CreateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,6 +168,34 @@ namespace AuthenticationService.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DriverApplications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DriverId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DriverApplications_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DriverApplications_Drivers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_MembershipTypeId",
                 table: "Companies",
@@ -177,6 +205,16 @@ namespace AuthenticationService.Migrations
                 name: "IX_CompanyAddresses_CompanyId",
                 table: "CompanyAddresses",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverApplications_CompanyId",
+                table: "DriverApplications",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverApplications_DriverId",
+                table: "DriverApplications",
+                column: "DriverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Drivers_CompanyId",
@@ -201,7 +239,7 @@ namespace AuthenticationService.Migrations
                 name: "CompanyAddresses");
 
             migrationBuilder.DropTable(
-                name: "Drivers");
+                name: "DriverApplications");
 
             migrationBuilder.DropTable(
                 name: "MembershipFees");
@@ -211,6 +249,9 @@ namespace AuthenticationService.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Drivers");
 
             migrationBuilder.DropTable(
                 name: "Companies");

@@ -29,4 +29,6 @@ public class Company
     public ICollection<CompanyAddress> CompanyAddresses { get; set; }
     public ICollection<Driver> Drivers { get; set; }
     public ICollection<ServiceCity> ServiceCities { get; set; }
+    
+    public ICollection<DriverApplications> DriverApplications { get; set; }
 }

@@ -50,7 +50,15 @@ public class AuthenticationDbContext : DbContext
             .WithMany(c => c.ServiceCities)
             .HasForeignKey(sc => sc.CompanyId);
         
-        
+        modelBuilder.Entity<DriverApplications>()
+            .HasOne(da => da.Driver)
+            .WithMany(d => d.DriverApplications)
+            .HasForeignKey(da => da.DriverId);
+
+        modelBuilder.Entity<DriverApplications>()
+            .HasOne(da => da.Company)
+            .WithMany(c => c.DriverApplications)
+            .HasForeignKey(da => da.CompanyId);
         
     }
 }

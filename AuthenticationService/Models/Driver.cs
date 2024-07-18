@@ -26,5 +26,7 @@ namespace AuthenticationService.Models
 
         public int? CompanyId { get; set; } // Allow CompanyId to be nullable
         public Company? Company { get; set; }
+        
+        public ICollection<DriverApplications> DriverApplications { get; set; }
     }
 }
